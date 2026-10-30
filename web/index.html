@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101719">
+  <title>XC-241 · Monitor da máquina</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="model.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./index.html" aria-label="Monitor XC-241"><span class="brand-icon">↗</span> INVENTUM <span class="brand-divider"></span><span class="brand-sub">MONITOR INDUSTRIAL</span></a>
+    <span class="readonly"><span></span> SOMENTE LEITURA</span>
+  </header>
+  <main>
+    <section class="heading">
+      <div><p class="eyebrow">LINHA DE CLASSIFICAÇÃO / ESP32-S3</p><h1>XC-241<span>Visão da operação</span></h1><p class="subtitle">Da detecção ao buffer. Acompanhe o que acontece na esteira.</p></div>
+      <div class="connection-controls"><label for="baud">Velocidade serial<select id="baud"><option>115200</option><option>230400</option><option>921600</option><option>9600</option></select></label><button class="primary" id="connect"><span>⌁</span> Conectar ao ESP</button><button id="demo">Ver demonstração</button></div>
+    </section>
+    <div class="notice" id="notice" role="status">Conecte o cabo USB de dados, clique em “Conectar ao ESP” e selecione a porta da placa.</div>
+    <section class="metrics" aria-label="Resumo da operação">
+      <article><p><span class="metric-dot" id="link-dot"></span> CONEXÃO</p><strong id="link-state">Desconectada</strong><small id="link-detail">Aguardando a porta serial</small></article>
+      <article><p>ESTEIRA</p><strong id="motor-state">Sem sinal</strong><small id="motor-detail">Estado informado pelo firmware</small></article>
+      <article><p>EM TRANSPORTE <span class="estimate">ESTIMADO</span></p><strong id="piece-count">0 <em>peças</em></strong><small id="recognition">Aguardando reconhecimento</small></article>
+      <article><p>ENVIO AO BUFFER <span class="estimate">ESTIMADO</span></p><strong id="buffer-count">0 <em>peças</em></strong><small>Nesta sessão de visualização</small></article>
+    </section>
+    <section class="machine-card">
+      <div class="panel-heading"><div><span class="eyebrow">01 / VISUALIZAÇÃO AO VIVO</span><h2>Fluxo da esteira</h2></div><span class="status-pill" id="flow-status">AGUARDANDO SINAL</span></div>
+      <div class="diagram-wrap">
+        <svg id="machine" viewBox="0 0 1100 440" role="img" aria-label="Esteira com estação de reconhecimento, três cilindros e saídas para o buffer">
+          <defs>
+            <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M 24 0 L 0 0 0 24" fill="none" stroke="#243033" stroke-width=".6"/></pattern>
+            <pattern id="tread" width="28" height="90" patternUnits="userSpaceOnUse"><rect width="28" height="90" fill="#273438"/><path d="M2 0V90" stroke="#3d4d51" stroke-width="2"/></pattern>
+            <linearGradient id="steel" x2="0" y2="1"><stop stop-color="#65777b"/><stop offset="1" stop-color="#2e3b3e"/></linearGradient>
+          </defs>
+          <rect width="1100" height="440" fill="url(#grid)"/>
+          <text x="60" y="52" class="svg-caption">ENTRADA</text><path d="M60 66H120m-8-6 8 6-8 6" class="direction"/>
+          <text x="985" y="52" class="svg-caption">SAÍDA</text>
+          <rect x="74" y="180" width="942" height="102" rx="51" fill="#11191c" stroke="#526369" stroke-width="3"/>
+          <rect x="93" y="190" width="905" height="82" rx="41" fill="url(#tread)"/>
+          <g id="rollers" fill="#182326" stroke="#718388" stroke-width="3"><circle cx="114" cy="231" r="23"/><path d="M91 231h46m-23-23v46"/><circle cx="977" cy="231" r="23"/><path d="M954 231h46m-23-23v46"/></g>
+          <path d="M130 291v27h45v-27m730 0v27h45v-27" fill="none" stroke="#3d4d51" stroke-width="10"/>
+          <g id="recognition-gate"><path d="M183 175v-36h80v36" fill="none" stroke="#6b7b80" stroke-width="7"/><path id="sensor-beam" d="M223 150v116" stroke="#65e4b0" stroke-width="2" stroke-dasharray="5 6" opacity=".3"/><rect x="210" y="135" width="26" height="17" rx="4" fill="#1e3830" stroke="#65e4b0"/><text x="223" y="110" text-anchor="middle" class="svg-label">RECONHECIMENTO</text><text x="223" y="128" text-anchor="middle" class="svg-code">sp + latch sm · posição 0</text></g>
+          <g class="actuator" id="arm-0"><text x="420" y="84" text-anchor="middle" class="svg-label">PEQUENA</text><text x="420" y="103" text-anchor="middle" class="svg-code">iBp / fBp</text><rect x="401" y="121" width="38" height="43" rx="5" fill="url(#steel)" stroke="#829499"/><path class="rod" d="M420 164v18" stroke="#b5c4c8" stroke-width="9"/><rect class="pusher" x="393" y="177" width="54" height="9" rx="2" fill="#65e4b0"/></g>
+          <g class="actuator" id="arm-1"><text x="660" y="84" text-anchor="middle" class="svg-label">MÉDIA</text><text x="660" y="103" text-anchor="middle" class="svg-code">iBm / fBm</text><rect x="641" y="121" width="38" height="43" rx="5" fill="url(#steel)" stroke="#829499"/><path class="rod" d="M660 164v18" stroke="#b5c4c8" stroke-width="9"/><rect class="pusher" x="633" y="177" width="54" height="9" rx="2" fill="#edc778"/></g>
+          <g class="actuator" id="arm-2"><text x="900" y="84" text-anchor="middle" class="svg-label">GRANDE</text><text x="900" y="103" text-anchor="middle" class="svg-code">iBg / fBg</text><rect x="881" y="121" width="38" height="43" rx="5" fill="url(#steel)" stroke="#829499"/><path class="rod" d="M900 164v18" stroke="#b5c4c8" stroke-width="9"/><rect class="pusher" x="873" y="177" width="54" height="9" rx="2" fill="#b5a5f5"/></g>
+          <g stroke="#56676c" fill="none" stroke-dasharray="4 7"><path d="M420 286v65m240-65v65m240-65v65m113-113h38v80"/></g>
+          <g class="svg-code" text-anchor="middle"><text x="420" y="375">↓ BUFFER</text><text x="660" y="375">↓ BUFFER</text><text x="900" y="375">↓ BUFFER</text></g>
+          <g id="pieces"></g>
+          <text x="60" y="420" class="svg-code">VISTA ESQUEMÁTICA · POSIÇÃO DAS PEÇAS ESTIMADA</text><text x="1040" y="420" text-anchor="end" class="svg-code" id="diagram-state">SEM TELEMETRIA</text>
+        </svg>
+      </div>
+      <div class="machine-footer"><div class="legend"><span><i class="green"></i> Pequena</span><span><i class="amber"></i> Média</span><span><i class="purple"></i> Grande</span><span><i class="metal"></i> Metálica</span></div><p id="arrival" aria-live="polite">As peças desaparecem ao cair no buffer.</p></div>
+    </section>
+    <section class="bottom-grid">
+      <article class="panel"><div class="panel-heading"><div><span class="eyebrow">02 / ENTRADAS E SAÍDA DE RETORNO</span><h2>Sensores e fins de curso</h2></div><span class="mini-label">ESTADOS DO ESP</span></div><div class="sensor-grid" id="sensors"></div></article>
+      <article class="panel"><div class="panel-heading"><div><span class="eyebrow">03 / HISTÓRICO</span><h2>Últimos eventos</h2></div><button class="text-button" id="clear-log">Limpar</button></div><ol class="event-log" id="events" aria-label="Histórico recente"><li class="empty">Os eventos aparecerão ao receber telemetria.</li></ol></article>
+    </section>
+    <details class="settings"><summary>Como a visualização acompanha o código <span>+</span></summary><div class="settings-content"><div><p class="eyebrow">MEMÓRIA RECEBIDA DO ESP</p><p id="memory">[ · | · | · | · | · | · | · ]</p><p id="step-detail">Aguardando o primeiro passo.</p></div><p>As sete posições vêm de esteira_mem. Os braços ficam nas posições 2, 4 e 6. O movimento entre paradas é interpolado com o tempo informado pelo firmware. O sensor grande está desativado no código atual; metal é indicado separadamente e não altera a classificação. A chegada ao buffer é estimada.</p><p>Use Chrome ou Edge no computador. Feche o monitor serial do ESP-IDF antes de conectar. A página recebe dados e não envia comandos à máquina. A interface USB-C da PCB e a configuração de console do firmware devem corresponder.</p></div></details>
+    <footer><span>XC-241 / MONITOR LOCAL</span><span id="packet-info">Nenhum pacote recebido</span><span>USB SERIAL · SEM NUVEM</span></footer>
+  </main>
+</body>
+</html>

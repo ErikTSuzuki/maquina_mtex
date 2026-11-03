@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#101719">
   <title>XC-241 · Monitor da máquina</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="layout.css">
   <script defer src="model.js"></script>
   <script defer src="app.js"></script>
 </head>
@@ -42,10 +43,10 @@
           <rect x="93" y="190" width="905" height="82" rx="41" fill="url(#tread)"/>
           <g id="rollers" fill="#182326" stroke="#718388" stroke-width="3"><circle cx="114" cy="231" r="23"/><path d="M91 231h46m-23-23v46"/><circle cx="977" cy="231" r="23"/><path d="M954 231h46m-23-23v46"/></g>
           <path d="M130 291v27h45v-27m730 0v27h45v-27" fill="none" stroke="#3d4d51" stroke-width="10"/>
-          <g id="recognition-gate"><path d="M183 175v-36h80v36" fill="none" stroke="#6b7b80" stroke-width="7"/><path id="sensor-beam" d="M223 150v116" stroke="#65e4b0" stroke-width="2" stroke-dasharray="5 6" opacity=".3"/><rect x="210" y="135" width="26" height="17" rx="4" fill="#1e3830" stroke="#65e4b0"/><text x="223" y="110" text-anchor="middle" class="svg-label">RECONHECIMENTO</text><text x="223" y="128" text-anchor="middle" class="svg-code">sp + latch sm · posição 0</text></g>
-          <g class="actuator" id="arm-0"><text x="420" y="84" text-anchor="middle" class="svg-label">PEQUENA</text><text x="420" y="103" text-anchor="middle" class="svg-code">iBp / fBp</text><rect x="401" y="121" width="38" height="43" rx="5" fill="url(#steel)" stroke="#829499"/><path class="rod" d="M420 164v18" stroke="#b5c4c8" stroke-width="9"/><rect class="pusher" x="393" y="177" width="54" height="9" rx="2" fill="#65e4b0"/></g>
-          <g class="actuator" id="arm-1"><text x="660" y="84" text-anchor="middle" class="svg-label">MÉDIA</text><text x="660" y="103" text-anchor="middle" class="svg-code">iBm / fBm</text><rect x="641" y="121" width="38" height="43" rx="5" fill="url(#steel)" stroke="#829499"/><path class="rod" d="M660 164v18" stroke="#b5c4c8" stroke-width="9"/><rect class="pusher" x="633" y="177" width="54" height="9" rx="2" fill="#edc778"/></g>
-          <g class="actuator" id="arm-2"><text x="900" y="84" text-anchor="middle" class="svg-label">GRANDE</text><text x="900" y="103" text-anchor="middle" class="svg-code">iBg / fBg</text><rect x="881" y="121" width="38" height="43" rx="5" fill="url(#steel)" stroke="#829499"/><path class="rod" d="M900 164v18" stroke="#b5c4c8" stroke-width="9"/><rect class="pusher" x="873" y="177" width="54" height="9" rx="2" fill="#b5a5f5"/></g>
+          <g id="recognition-gate"><path d="M183 175v-36h80v36" fill="none" stroke="#6b7b80" stroke-width="7"/><path id="sensor-beam" d="M223 150v116" stroke="#65e4b0" stroke-width="2" stroke-dasharray="5 6" opacity=".3"/><rect x="210" y="135" width="26" height="17" rx="4" fill="#1e3830" stroke="#65e4b0"/><text x="223" y="110" text-anchor="middle" class="svg-label">RECONHECIMENTO</text></g>
+          <g class="actuator" id="arm-0"><text x="420" y="84" text-anchor="middle" class="svg-label">PEQUENA</text><rect x="401" y="121" width="38" height="43" rx="5" fill="url(#steel)" stroke="#829499"/><path class="rod" d="M420 164v18" stroke="#b5c4c8" stroke-width="9"/><rect class="pusher" x="393" y="177" width="54" height="9" rx="2" fill="#65e4b0"/></g>
+          <g class="actuator" id="arm-1"><text x="660" y="84" text-anchor="middle" class="svg-label">MÉDIA</text><rect x="641" y="121" width="38" height="43" rx="5" fill="url(#steel)" stroke="#829499"/><path class="rod" d="M660 164v18" stroke="#b5c4c8" stroke-width="9"/><rect class="pusher" x="633" y="177" width="54" height="9" rx="2" fill="#edc778"/></g>
+          <g class="actuator" id="arm-2"><text x="900" y="84" text-anchor="middle" class="svg-label">GRANDE</text><rect x="881" y="121" width="38" height="43" rx="5" fill="url(#steel)" stroke="#829499"/><path class="rod" d="M900 164v18" stroke="#b5c4c8" stroke-width="9"/><rect class="pusher" x="873" y="177" width="54" height="9" rx="2" fill="#b5a5f5"/></g>
           <g stroke="#56676c" fill="none" stroke-dasharray="4 7"><path d="M420 286v65m240-65v65m240-65v65m113-113h38v80"/></g>
           <g class="svg-code" text-anchor="middle"><text x="420" y="375">↓ BUFFER</text><text x="660" y="375">↓ BUFFER</text><text x="900" y="375">↓ BUFFER</text></g>
           <g id="pieces"></g>

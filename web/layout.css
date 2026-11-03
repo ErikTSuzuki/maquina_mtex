@@ -16,13 +16,13 @@ main {
   min-height: 0;
   padding: 12px 20px 10px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(320px, 28vw, 400px);
-  grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
   gap: 10px;
   margin: 0 auto;
 }
 main > * { min-width: 0; min-height: 0; }
-.heading, .notice, .metrics, .settings, main > footer { grid-column: 1 / -1; }
+.heading, .notice, .metrics, main > footer { grid-column: 1 / -1; }
 .heading { flex-direction: row; align-items: center; margin: 0; gap: 12px; }
 .heading .eyebrow { font-size: 11px; margin-bottom: 4px; }
 h1 { font-size: 28px; letter-spacing: -1px; }
@@ -57,57 +57,6 @@ h2 { font-size: 18px; line-height: 1.2; margin-top: 4px; }
 .machine-footer { padding: 8px 12px; gap: 12px; flex-direction: row; align-items: center; }
 .legend { font-size: 12px; gap: 12px; }
 .machine-footer p { font-size: 12px; line-height: 1.3; }
-.bottom-grid {
-  grid-column: 2;
-  grid-row: 4;
-  margin: 0;
-  gap: 10px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr);
-}
-.bottom-grid .panel { min-width: 0; min-height: 0; }
-.bottom-grid .panel:last-child { display: grid; grid-template-rows: auto minmax(0, 1fr); }
-.mini-label { display: none; }
-.sensor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 12px 12px; gap: 6px; }
-.sensor {
-  padding: 6px 8px;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: 6px minmax(0, 1fr) 18px;
-  column-gap: 7px;
-  row-gap: 2px;
-  align-items: center;
-}
-.sensor i { grid-column: 1; grid-row: 1 / 3; margin: 0; }
-.sensor b { grid-column: 2; grid-row: 1; font-size: 14px; line-height: 1.15; }
-.sensor .sensor-level { grid-column: 3; grid-row: 1 / 3; float: none; text-align: right; font-size: 14px; }
-.sensor .sensor-name { grid-column: 2; grid-row: 2; font-size: 13px; margin: 0; line-height: 1.15; }
-.event-log { height: auto; min-height: 0; padding-inline: 12px; margin-bottom: 8px; overflow: auto; }
-.event-log li { padding: 7px 0; gap: 6px; align-items: flex-start; line-height: 1.3; font-size: 13px; }
-.event-log time { font-size: 11px; flex-shrink: 0; }
-.event-log b { min-width: 39px; font-size: 11px; flex-shrink: 0; }
-.event-log span { min-width: 0; overflow-wrap: anywhere; }
-.text-button { font-size: 13px; }
-.settings { position: relative; margin: 0; padding: 6px 12px; font-size: 13px; }
-.settings summary span { font-size: 14px; line-height: 1; }
-.settings[open] .settings-content {
-  position: absolute;
-  z-index: 10;
-  bottom: calc(100% + 8px);
-  left: -1px;
-  right: -1px;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-  max-height: min(65dvh, 320px);
-  overflow: auto;
-  padding: 18px;
-  border: 1px solid #405055;
-  border-radius: 8px;
-  background: var(--panel);
-  box-shadow: 0 8px 32px #0008;
-}
 main > footer { padding: 0; flex-wrap: nowrap; font-size: 10px; gap: 12px; line-height: 1.3; letter-spacing: .3px; }
 
 /* Short laptop windows keep the same sections, with tighter spacing. */
@@ -120,18 +69,15 @@ main > footer { padding: 0; flex-wrap: nowrap; font-size: 10px; gap: 12px; line-
   .metrics article { padding: 7px 12px; }
   .metrics strong { font-size: 25px; }
   .panel-heading { padding: 8px 12px; }
-  .sensor { padding: 5px 7px; }
-  .sensor-grid { gap: 5px; padding-bottom: 9px; }
   .machine-footer { padding: 7px 10px; }
-  .settings { padding-block: 5px; }
 }
 
-/* Narrow screens place sensors and history below the drawing, still in view. */
+/* Narrow screens retain the same single-column dashboard. */
 @media (max-width: 900px) {
   main {
     padding-inline: 10px;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto minmax(0, 1fr) minmax(100px, 22dvh) auto auto;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
     gap: 7px;
   }
   .heading { align-items: center; }
@@ -140,40 +86,18 @@ main > footer { padding: 0; flex-wrap: nowrap; font-size: 10px; gap: 12px; line-
   h1 span { font-size: 15px; margin-left: 8px; }
   .subtitle { font-size: 12px; }
   .connection-controls button, .connection-controls select { padding: 7px 8px; font-size: 12px; }
-  .bottom-grid { grid-column: 1; grid-row: 5; grid-template-columns: 1.15fr 1fr; grid-template-rows: minmax(0, 1fr); gap: 7px; }
-  .bottom-grid .panel:first-child { display: grid; grid-template-rows: auto minmax(0, 1fr); }
-  .sensor-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); min-height: 0; }
-  .sensor { padding: 4px; grid-template-columns: 4px minmax(0, 1fr) 10px; column-gap: 4px; }
-  .sensor b, .sensor .sensor-level { font-size: 12px; }
-  .sensor .sensor-name { font-size: 11px; margin: 0; }
   .metrics article:nth-child(-n+2) { border-bottom: 0; }
   .metrics article:nth-child(2) { border-right: 1px solid var(--line); }
   .metrics p { font-size: 10px; letter-spacing: .5px; }
   .metrics strong { font-size: 23px; }
 }
 
-/* Landscape windows retain a side rail so the drawing can stay readable. */
+/* Compact headings leave more room for the belt in landscape windows. */
 @media (min-width: 701px) and (max-width: 900px) and (max-height: 700px) {
-  main {
-    grid-template-columns: minmax(0, 1fr) 270px;
-    grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
-  }
-  .bottom-grid {
-    grid-column: 2;
-    grid-row: 4;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-  }
   .panel-heading { padding: 7px 9px; }
   .panel-heading .eyebrow { font-size: 9px; }
   h2 { font-size: 15px; margin-top: 3px; }
   .status-pill { max-width: 115px; font-size: 9px; text-align: center; }
-  .sensor-grid { padding: 0 7px 7px; gap: 4px; }
-  .sensor { grid-template-columns: minmax(0, 1fr) 10px; padding: 4px; column-gap: 2px; }
-  .sensor i { display: none; }
-  .sensor b { grid-column: 1; font-size: 11px; }
-  .sensor .sensor-level { grid-column: 2; grid-row: 1; font-size: 11px; }
-  .sensor .sensor-name { grid-column: 1 / -1; font-size: 11px; line-height: 1.2; }
   .machine-footer { flex-wrap: wrap; gap: 5px; }
   .machine-footer p { text-align: left; }
 }
@@ -208,18 +132,5 @@ main > footer { padding: 0; flex-wrap: nowrap; font-size: 10px; gap: 12px; line-
   .legend { font-size: 10px; gap: 6px; }
   .legend i { width: 5px; height: 5px; }
   .machine-footer p { max-width: 40%; font-size: 10px; }
-  .sensor-grid { gap: 3px; padding: 0 5px 5px; }
-  .sensor { padding: 4px 3px; grid-template-columns: 4px minmax(0, 1fr) 8px; column-gap: 2px; }
-  .sensor b, .sensor .sensor-level { font-size: 10px; }
-  .sensor i { width: 4px; height: 4px; margin-right: 3px; }
-  .sensor .sensor-name { font-size: 9px; overflow-wrap: anywhere; }
-  .event-log { padding-inline: 6px; }
-  .event-log li { gap: 4px; font-size: 11px; padding-block: 5px; flex-wrap: wrap; }
-  .event-log time { font-size: 9px; }
-  .event-log b { min-width: 27px; font-size: 9px; }
-  .text-button { font-size: 11px; }
-  .settings { padding: 5px 8px; font-size: 11px; }
-  .settings[open] .settings-content { grid-template-columns: 1fr; gap: 12px; padding: 12px; }
-  .settings-content p:last-child { grid-column: auto; }
   main > footer { flex-wrap: wrap; gap: 2px 8px; font-size: 8px; }
 }

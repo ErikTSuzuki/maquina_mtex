@@ -1,20 +1,11 @@
 "use strict";
 (() => {
   const $ = id => document.getElementById(id);
-  const { Machine, LineDecoder, INPUTS } = XC241;
+  const { Machine, LineDecoder } = XC241;
   const machine = new Machine();
-  const sensorNames = ["Pequena · nível", "Média · nível¹", "Grande · inativo", "Metal", "Retorno P", "Retorno M", "Retorno G"];
   let port = null, reader = null, reading = null, connecting = false, closing = false;
-  let lastPacket = 0, lastAnimation = performance.now(), demo = null, logEmpty = true;
+  let lastPacket = 0, lastAnimation = performance.now(), demo = null;
   let parser = new LineDecoder(receive);
-  INPUTS.forEach((name, index) => {
-    const node = document.createElement("div"); node.className = "sensor"; node.id = `sensor-${index}`;
-    node.innerHTML = `<i></i><b>${name}</b><span class="sensor-level">—</span><p class="sensor-name">${sensorNames[index]}</p>`;
-    $("sensors").append(node);
-  });
-  const returnOutput = document.createElement("div"); returnOutput.className = "sensor"; returnOutput.id = "sensor-7";
-  returnOutput.innerHTML = '<i></i><b>iBgV</b><span class="sensor-level">—</span><p class="sensor-name">Saída retorno G</p>';
-  $("sensors").append(returnOutput);
   function notice(message, warning = false) {
     $("notice").textContent = message; $("notice").classList.toggle("warning", warning);
   }
@@ -65,7 +56,7 @@
       selected = await navigator.serial.requestPort();
       await selected.open({ baudRate: Number($("baud").value), bufferSize: 16384, flowControl: "none" });
       port = selected; closing = false;
-      machine.reset(); parser = new LineDecoder(receive); clearLog(); lastPacket = 0;
+      machine.reset(); parser = new LineDecoder(receive); lastPacket = 0;
       notice("Porta aberta. Aguardando @XC241 do firmware; confirme a velocidade e a configuração do console.");
       reading = readPort(selected);
     } catch (error) {
@@ -74,18 +65,16 @@
       else notice("Seleção de porta cancelada. Clique em conectar para tentar novamente.");
     } finally { connecting = false; refresh(); }
   });
-  function clearLog() { $("events").replaceChildren(); logEmpty = true; }
-  $("clear-log").addEventListener("click", clearLog);
   function stopDemo() {
     if (!demo) return;
-    demo = null; machine.reset(); lastPacket = 0; clearLog();
+    demo = null; machine.reset(); lastPacket = 0;
     $("demo").textContent = "Ver demonstração";
     notice("Demonstração encerrada. Conecte o ESP para acompanhar a máquina.");
   }
   $("demo").addEventListener("click", () => {
     if (demo) { stopDemo(); return; }
     if (port || connecting) return;
-    machine.reset(); clearLog();
+    machine.reset();
     demo = { started: performance.now(), lastStep: 0,
       frame: { v: 1, boot: 241, seq: 0, ms: 0, motor: 1, inputs: 112, pulses: 0, detected: [0, 0, 0, 0], diverted: [0, 0, 0], dropped: 0, event: "boot", belt: [0, 0, 0, 0, 0, 0, 0], step: 0, step_ms: 1000, phase_ms: 0 } };
     $("demo").textContent = "Sair da demonstração";
@@ -156,22 +145,11 @@
     const status = $("flow-status"); status.textContent = demo ? "DEMONSTRAÇÃO" : fresh ? moving ? "ESTEIRA EM MOVIMENTO" : "ESTEIRA PARADA" : "AGUARDANDO SINAL";
     status.classList.toggle("running", moving && !demo); status.classList.toggle("demo", !!demo);
     $("diagram-state").textContent = fresh ? moving ? "MOTOR ON →" : "MOTOR OFF ■" : "SEM TELEMETRIA";
-    for (let i = 0; i < 8; i++) {
-      const node = $(`sensor-${i}`), high = i === 7 ? !!(machine.pulses & 8) : !!(machine.inputs & (1 << i));
-      node.classList.toggle("active", fresh && high); node.querySelector(".sensor-level").textContent = fresh ? high ? "1" : "0" : "—";
-    }
     while (machine.messages.length) {
       const message = machine.messages.shift();
-      if (logEmpty) { $("events").replaceChildren(); logEmpty = false; }
-      const item = document.createElement("li"), time = document.createElement("time"), code = document.createElement("b"), description = document.createElement("span");
-      time.textContent = new Date().toLocaleTimeString("pt-BR"); code.textContent = message.code; description.textContent = message.text;
-      item.append(time, code, description); $("events").prepend(item);
       if (message.code === "BUFFER") $("arrival").textContent = message.text;
-      while ($("events").children.length > 70) $("events").lastChild.remove();
     }
     const f = machine.frame;
-    $("memory").textContent = f ? `[ ${f.belt.map(type => ["·", "P", "M", "G"][type]).join(" | ")} ]` : "[ · | · | · | · | · | · | · ]";
-    $("step-detail").textContent = f ? `Passo ${f.step} · fase de ${f.step_ms} ms. ¹ O pulso rápido de sm é capturado pela interrupção do ESP; o indicador mostra o nível amostrado.` : "Aguardando o primeiro passo.";
     $("packet-info").textContent = f ? `PACOTE ${f.seq} · ESP ${(f.ms / 1000).toFixed(1)} s · DESCARTES ${f.dropped} · LACUNAS ${machine.missed} · INVÁLIDOS ${parser.invalid}` : "Nenhum pacote recebido";
     if (port && !fresh && lastPacket) notice("Telemetria interrompida há mais de 1,5 s. Movimento congelado; verifique o cabo e o firmware.", true);
   }

@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="layout.css">
   <script defer src="model.js"></script>
-  <script defer src="app.js"></script>
+  <script defer src="app.js?v=2"></script>
 </head>
 <body>
   <header class="topbar">
@@ -55,11 +55,6 @@
       </div>
       <div class="machine-footer"><div class="legend"><span><i class="green"></i> Pequena</span><span><i class="amber"></i> Média</span><span><i class="purple"></i> Grande</span><span><i class="metal"></i> Metálica</span></div><p id="arrival" aria-live="polite">As peças desaparecem ao cair no buffer.</p></div>
     </section>
-    <section class="bottom-grid">
-      <article class="panel"><div class="panel-heading"><div><span class="eyebrow">02 / ENTRADAS E SAÍDA DE RETORNO</span><h2>Sensores e fins de curso</h2></div><span class="mini-label">ESTADOS DO ESP</span></div><div class="sensor-grid" id="sensors"></div></article>
-      <article class="panel"><div class="panel-heading"><div><span class="eyebrow">03 / HISTÓRICO</span><h2>Últimos eventos</h2></div><button class="text-button" id="clear-log">Limpar</button></div><ol class="event-log" id="events" aria-label="Histórico recente"><li class="empty">Os eventos aparecerão ao receber telemetria.</li></ol></article>
-    </section>
-    <details class="settings"><summary>Como a visualização acompanha o código <span>+</span></summary><div class="settings-content"><div><p class="eyebrow">MEMÓRIA RECEBIDA DO ESP</p><p id="memory">[ · | · | · | · | · | · | · ]</p><p id="step-detail">Aguardando o primeiro passo.</p></div><p>As sete posições vêm de esteira_mem. Os braços ficam nas posições 2, 4 e 6. O movimento entre paradas é interpolado com o tempo informado pelo firmware. O sensor grande está desativado no código atual; metal é indicado separadamente e não altera a classificação. A chegada ao buffer é estimada.</p><p>Use Chrome ou Edge no computador. Feche o monitor serial do ESP-IDF antes de conectar. A página recebe dados e não envia comandos à máquina. A interface USB-C da PCB e a configuração de console do firmware devem corresponder.</p></div></details>
     <footer><span>XC-241 / MONITOR LOCAL</span><span id="packet-info">Nenhum pacote recebido</span><span>USB SERIAL · SEM NUVEM</span></footer>
   </main>
 </body>
